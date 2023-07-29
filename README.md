@@ -49,11 +49,13 @@ http://localhost:4000
 ```
 
 ## Resources
-| Name                                        | Type      |
-|---------------------------------------------|-----------|
-| [Docker docs](https://docs.docker.com/)     | resource  |
-| [pypi](https://pypi.org/)                   | resource  |
-| [openai](https://pypi.org/project/openai/)  | resource  |
-| [Google search](https://www.google.com/)    | resource  |
-| [stackoverflow](https://stackoverflow.com/) | resource  |
+| Name                                                           | Type      |
+|----------------------------------------------------------------|-----------|
+| [Docker docs](https://docs.docker.com/)                        | resource  |
+| [pypi](https://pypi.org/)                                      | resource  |
+| [openai](https://pypi.org/project/openai/)                     | resource  |
+| [Google search](https://www.google.com/)                       | resource  |
+| [stackoverflow](https://stackoverflow.com/)                    | resource  |
+| [vuejs](https://vuejs.org/)                                    | resource  |
+| [fastapi]([https://vuejs.org/](https://fastapi.tiangolo.com/)) | resource  |
 
