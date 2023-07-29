@@ -1,0 +1,148 @@
+<template>
+  <div class="row" style="height: 90vh">
+    <div class="col-0 col-md-6 flex justify-center content-center">
+      <img src="~assets/login.svg" class="responsive" alt="login-image">
+    </div>
+    <div v-bind:class="{'justify-center': $q.screen.md || $q.screen.sm ||$q.screen.xs}"
+         class="col-12 col-md-6 flex content-center">
+      <q-card v-bind:style="$q.screen.lt.sm ? {'width': '80%'} : {'width': '50%'}">
+        <q-card-section>
+          <q-avatar size="103px" class="absolute-center shadow-10">
+            <img src="~assets/avatar.svg" alt="avatar">
+          </q-avatar>
+        </q-card-section>
+        <q-card-section>
+          <div class="q-pt-lg">
+            <div class="col text-h6 ellipsis flex justify-center">
+              <h2 class="text-h2 text-uppercase q-my-none text-weight-regular">Login</h2>
+            </div>
+          </div>
+        </q-card-section>
+        <q-card-section>
+          <q-form class="q-gutter-md" @submit.prevent="submitForm">
+            <q-input
+              outlined
+              label="Enter email *"
+              @update:model-value="isEmailInputValid"
+              @blur="isEmailInputValid"
+              v-model="login.email.value"
+              :error="login.email.error"
+              :error-message="login.email.msg">
+              <template v-slot:prepend>
+                <q-icon name="email"></q-icon>
+              </template>
+            </q-input>
+            <q-input
+              label="Enter password *"
+              outlined
+              @update:model-value="isPasswordInputValid"
+              @blur="isPasswordInputValid"
+              :type="isPassword ? 'password' : 'text'"
+              v-model="login.password.value"
+              :error="login.password.error"
+              :error-message="login.password.msg">
+              <template v-slot:prepend>
+                <q-icon name="lock" />
+              </template>
+              <template v-slot:append>
+                <q-icon
+                  @click="isPassword = !isPassword"
+                  :name="isPassword ? 'visibility_off' : 'visibility'" />
+              </template>
+            </q-input>
+            <div>
+              <q-btn class="full-width" color="primary" label="Login" type="submit" rounded></q-btn>
+              <div class="text-center q-mt-sm q-gutter-lg">
+                <router-link class="text-white" to="/login">Forgot password?</router-link>
+                <router-link class="text-white" to="/signup">Sign up</router-link>
+              </div>
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </div>
+  </div>
+</template>
+
+<script>
+import { useQuasar } from 'quasar'
+import { mapActions } from 'vuex'
+import { validateInput } from 'src/hooks'
+let $q
+
+export default {
+  name: 'LoginPage',
+  data () {
+    return {
+      login: {
+        email: {
+          value: '',
+          email: true,
+          requiredMsg: 'Email is required!',
+          emailMsg: 'Invalid email address!',
+          required: true
+        },
+        password: {
+          value: '',
+          requiredMsg: 'Password is required!',
+          required: true
+        }
+      },
+      isPassword: true,
+      isEmailInputValid: () => {
+        return validateInput(this.login, 'email')
+      },
+      isPasswordInputValid: () => {
+        return validateInput(this.login, 'password')
+      }
+    }
+  },
+  methods: {
+    ...mapActions('auth', ['doLogin']),
+
+    async submitForm () {
+      if (!this.login.email.value) {
+        $q.notify({
+          type: 'negative',
+          message: 'Invalid email address!'
+        })
+      } else if (!this.login.password.value) {
+        $q.notify({
+          type: 'negative',
+          message: 'Password is required field!'
+        })
+      } else if (this.login.password.value.length < 6) {
+        $q.notify({
+          type: 'negative',
+          message: 'The password must be 6 or more characters long.'
+        })
+      } else {
+        try {
+          const payload = {
+            username: this.login.email.value,
+            password: this.login.password.value
+          }
+          await this.doLogin(payload)
+          const toPath = this.$route.query.to || '/tasks'
+          this.$router.push(toPath)
+        } catch (err) {
+          console.log(err)
+          if (err.response.data.detail) {
+            $q.notify({
+              type: 'negative',
+              message: err.response.data.detail
+            })
+          }
+        }
+      }
+    }
+  },
+  mounted () {
+    $q = useQuasar()
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
