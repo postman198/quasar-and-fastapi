@@ -231,6 +231,10 @@ export default {
               message: err.response.data.detail
             })
           }
+        } finally {
+          this.addTaskForm.title.value = ''
+          this.addTaskForm.status = 'Open'
+          this.addTaskForm.description = ''
         }
       }
     },
@@ -264,6 +268,10 @@ export default {
               message: err.response.data.detail
             })
           }
+        } finally {
+          this.editTaskForm.title.value = ''
+          this.editTaskForm.status = ''
+          this.editTaskForm.description = ''
         }
       }
     },
