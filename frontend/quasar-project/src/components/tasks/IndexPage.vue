@@ -41,7 +41,12 @@
             </q-card-actions>
           </q-card>
         </q-dialog>
-        <q-card-section align="center">
+        <q-card-section align="center" v-if="!(tasks.length > 0)">
+          <div>
+            <h1>No task available</h1>
+          </div>
+        </q-card-section>
+        <q-card-section align="center" v-if="tasks.length > 0">
           <div>
             <q-table
               flat bordered
@@ -226,10 +231,6 @@ export default {
               message: err.response.data.detail
             })
           }
-        } finally {
-          this.addTaskForm.title.value = ''
-          this.addTaskForm.status = 'Open'
-          this.addTaskForm.description = ''
         }
       }
     },
@@ -263,10 +264,6 @@ export default {
               message: err.response.data.detail
             })
           }
-        } finally {
-          this.editTaskForm.title.value = ''
-          this.editTaskForm.status = ''
-          this.editTaskForm.description = ''
         }
       }
     },
