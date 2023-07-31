@@ -132,11 +132,11 @@ async def get_user_task_by_id(task_id: int, user: _schemas.User, db: _orm.Sessio
 
 async def update_user_task_by_id(task_id: int, task: _schemas.Task, user: _schemas.User, db: _orm.Session):
     _task = await get_user_task_by_id(task_id=task_id, user=user,  db=db)
-    if _task.title:
+    if task.title:
         _task.title = task.title
-    if _task.description:
+    if task.description:
         _task.description = task.description
-    if _task.status:
+    if task.status:
         _task.status = task.status
     db.commit()
     db.refresh(_task)
