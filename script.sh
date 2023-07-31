@@ -67,6 +67,16 @@ function build_and_run_myapp_backend(){
 
   DATABASE_URL=postgresql+psycopg2://postgres:Admin123@${DB_SERVICE_HOST}:5432/taskdb
   JWT_SECRET=$(python secret_key.py)
+  if [[ $? -ne 0 ]]
+  then
+    JWT_SECRET=$(python3 secret_key.py)
+    if [[ $? -ne 0 ]]
+    then
+      echo "[ERROR]: python: command not found "
+      echo "         please install python"
+      exit 1
+    fi
+  fi
   EXPIRES=60
   
   ENV_PARAM="-e ALGORITHM=HS256 -e JWT_SECRET=${JWT_SECRET} -e DATABASE_URL=${DATABASE_URL} -e EXPIRES=${EXPIRES}"
